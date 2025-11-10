@@ -16,6 +16,7 @@ skill_user_association = Table(
 )
 
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -25,7 +26,12 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     full_name: Mapped[str] = mapped_column(String(100), nullable=True)
     bio: Mapped[str] = mapped_column(Text, nullable=True)
+    
 
+    avatar_url: Mapped[str] = mapped_column(String(500), nullable=True)
+    phone: Mapped[str] = mapped_column(String(20), nullable=True)
+    location: Mapped[str] = mapped_column(String(100), nullable=True)
+    
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=True)
     updated_at: Mapped[dt.datetime] = mapped_column(
         DateTime(timezone=True),
@@ -33,6 +39,8 @@ class User(Base):
         server_default=func.now(),
         nullable=True,
     )
+
+
 
     # Relationships
     skills: Mapped[list["Skill"]] = relationship(

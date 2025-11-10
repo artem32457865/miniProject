@@ -9,6 +9,10 @@ class UserBase(BaseModel):
     email: EmailStr
     full_name: Optional[str] = Field(None, max_length=100)
     bio: Optional[str] = None
+    
+    avatar_url: Optional[str] = Field(None, max_length=500)
+    phone: Optional[str] = Field(None, max_length=20, pattern=r'^\+?[1-9]\d{1,14}$')
+    location: Optional[str] = Field(None, max_length=100)
 
 
 class UserCreate(UserBase):

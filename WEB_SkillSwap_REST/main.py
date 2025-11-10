@@ -6,9 +6,9 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from settings import get_db
-from src.routes import skills, statistic
+from src.routes import skills, statistic, users, exchanges
 
-# Створюємо екземпляр FastAPI з метаданими
+# Створюємо екземпляр FastAPI з метаданами
 app = FastAPI(
     title="SkillSwap API",
     description="API для платформи обміну навичками між підлітками",
@@ -16,9 +16,11 @@ app = FastAPI(
     contact={"name": "SkillSwap Team", "email": "support@skillswap.com"},
 )
 
+# Підключаємо роутери
 app.include_router(skills.router)
 app.include_router(statistic.router)
-
+app.include_router(users.router)
+app.include_router(exchanges.router)
 
 @app.get("/", tags=["General"])
 def read_root():
@@ -27,9 +29,15 @@ def read_root():
         "message": "Ласкаво просимо до SkillSwap API!",
         "description": "Платформа для обміну навичками",
         "version": "1.0.0",
-        "endpoints": {"documentation": "/docs", "skills": "/skills", "health": "/health"},
+        "endpoints": {
+            "documentation": "/docs",
+            "skills": "/skills",
+            "users": "/users", 
+            "exchanges": "/exchanges",
+            "statistics": "/api/stats",
+            "health": "/health"
+        },
     }
-
 
 @app.get("/health", tags=["General"])
 async def health_check(db: AsyncSession = Depends(get_db)):
@@ -48,7 +56,6 @@ async def health_check(db: AsyncSession = Depends(get_db)):
         },
         "timestamp": datetime.now().isoformat(),
     }
-
 
 if __name__ == "__main__":
     uvicorn.run(f"{__name__}:app", port=8000, reload=True)

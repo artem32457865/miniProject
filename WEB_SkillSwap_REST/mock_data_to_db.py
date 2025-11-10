@@ -1,6 +1,6 @@
 import asyncio
 
-from models import User
+from src.models import User
 from settings import Base, api_config, async_engine, async_session
 
 
